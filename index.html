@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>🌿 Sistema de Lavandas</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  margin:0;
+  background:#0f1115;
+  color:#e5e7eb;
+}
+
+/* HEADER */
+header{
+  text-align:center;
+  padding:20px;
+  font-size:28px;
+  font-weight:bold;
+  background:#111827;
+  border-bottom:1px solid #1f2937;
+}
+
+/* CONTENEDOR */
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
+
+/* FORM */
+.form{
+  background:#111827;
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  margin-bottom:20px;
+}
+
+.form h2{
+  text-align:center;
+  color:#86efac;
+}
+
+/* INPUTS */
+input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:8px;
+  border:1px solid #374151;
+  background:#0f1115;
+  color:white;
+  transition:0.3s;
+}
+
+input:focus{
+  border-color:#86efac;
+  box-shadow:0 0 8px rgba(134,239,172,0.4);
+  outline:none;
+}
+
+/* BOTÓN */
+button{
+  width:100%;
+  padding:12px;
+  background:#22c55e;
+  color:#022c22;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:16px;
+  transition:0.3s;
+  font-weight:bold;
+}
+
+button:hover{
+  background:#16a34a;
+  transform:scale(1.03);
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+/* CARD */
+.card{
+  background:#111827;
+  border-radius:15px;
+  padding:15px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.6);
+  transition:0.3s;
+  border:1px solid #1f2937;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  border-color:#22c55e;
+}
+
+/* IMAGEN */
+.card img{
+  width:100%;
+  border-radius:10px;
+  margin-top:10px;
+}
+
+/* TEXTO */
+.card h3{
+  color:#86efac;
+}
+
+.card p{
+  color:#d1d5db;
+}
+
+/* MENSAJE VACÍO */
+.empty{
+  text-align:center;
+  color:#6b7280;
+}
+
+/* ANIMACIÓN */
+.card{
+  animation:fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<header>🌿 Sistema de Registro de Lavandas</header>
+
+<div class="container">
+
+<div class="form">
+  <h2>Agregar Lavanda</h2>
+
+  <input id="duenio" placeholder="👤 Nombre del dueño">
+  <input id="fecha" type="date">
+  <input id="altura" placeholder="📏 Altura en cm">
+  <input id="imagen" placeholder="🖼 URL de la imagen">
+
+  <button onclick="guardar()">Guardar</button>
+</div>
+
+<div class="grid" id="lista"></div>
+
+</div>
+
+<script>
+
+const API = "http://localhost:3000/lavandas";
+
+// 🔹 CARGAR
+function cargar(){
+  fetch(API)
+  .then(res => res.json())
+  .then(data => {
+    const lista = document.getElementById("lista");
+
+    if(data.length === 0){
+      lista.innerHTML = "<p class='empty'>No hay lavandas registradas 🌿</p>";
+      return;
+    }
+
+    lista.innerHTML = data.map(l => `
+      <div class="card">
+        <h3>${l.duenio}</h3>
+        <p><b>📅 Fecha:</b> ${l.fecha}</p>
+        <p><b>📏 Altura:</b> ${l.altura} cm</p>
+        ${l.imagen ? `<img src="${l.imagen}">` : ""}
+      </div>
+    `).join("");
+  });
+}
+
+// 🔹 GUARDAR
+function guardar(){
+
+  if(!duenio.value || !fecha.value || !altura.value){
+    alert("Completa todos los campos");
+    return;
+  }
+
+  fetch(API, {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({
+      duenio: duenio.value,
+      fecha: fecha.value,
+      altura: altura.value,
+      imagen: imagen.value
+    })
+  })
+  .then(()=>{
+    alert("🌿 Lavanda registrada");
+
+    duenio.value="";
+    fecha.value="";
+    altura.value="";
+    imagen.value="";
+
+    cargar();
+  });
+}
+
+cargar();
+
+</script>
+
+</body>
+</html>
