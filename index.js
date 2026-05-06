@@ -1,4 +1,4 @@
-console.log("🚀 API Lavandas...");
+console.log("🚀 API Lavandas iniciando...");
 
 require("dotenv").config();
 const express = require("express");
@@ -6,66 +6,72 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express();
+
+// 🔓 Middlewares
 app.use(cors());
 app.use(express.json());
 
-// 🔗 CONEXIÓN FORZANDO DB paecc
-mongoose.connect(process.env.MONGO_URL, {
-  dbName: "paecc"
-})
-.then(() => console.log("✅ Conectado a Mongo (paecc)"))
-.catch(err => console.log("❌ Error Mongo:", err));
-console.log("👉 URL REAL:", process.env.MONGO_URL);
+/* =========================
+   🔗 CONEXIÓN A MONGO
+========================= */
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => console.log("✅ Conectado a MongoDB"))
+  .catch((err) => console.log("❌ Error Mongo:", err));
 
-
-// 🌿 MODELO (colección = lavandas)
-const Lavanda = mongoose.model("Lavanda", {
+/* =========================
+   🌿 MODELO LAVANDA
+========================= */
+const lavandaSchema = new mongoose.Schema({
   duenio: String,
   fecha: String,
   altura: Number,
   imagen: String
 });
 
+const Lavanda = mongoose.model("Lavanda", lavandaSchema);
 
-// 🔹 BASE
+/* =========================
+   🟢 RUTA PRINCIPAL
+========================= */
 app.get("/", (req, res) => {
   res.send("API Lavandas funcionando 🌿");
 });
 
-
-// 🔹 LISTAR
+/* =========================
+   📄 LISTAR TODAS
+========================= */
 app.get("/lavandas", async (req, res) => {
   try {
     const datos = await Lavanda.find();
     res.json(datos);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json({ error: "Error al obtener datos" });
   }
 });
 
-
-// 🔹 CREAR
+/* =========================
+   ➕ CREAR LAVANDA
+========================= */
 app.post("/lavandas", async (req, res) => {
   try {
-    console.log("📦 Guardando:", req.body);
-
-    const nueva = new Lavanda(req.body);
-    await nueva.save();
+    const nuevaLavanda = new Lavanda(req.body);
+    await nuevaLavanda.save();
 
     res.json({
-      mensaje: "Guardado en Mongo ✅",
-      data: nueva
+      mensaje: "Guardado correctamente 🌿",
+      data: nuevaLavanda
     });
 
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json({ error: "Error al guardar" });
   }
 });
 
-
-// 🚀 SERVIDOR
+/* =========================
+   🚀 SERVIDOR
+========================= */
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`🔥 http://localhost:${PORT}`);
+  console.log(`🔥 Servidor corriendo en puerto ${PORT}`);
 });
