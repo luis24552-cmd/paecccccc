@@ -1,226 +1,939 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>🌿 Sistema de Lavandas</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
+
+/* ===== RESET ===== */
+
 *{
+  margin:0;
+  padding:0;
   box-sizing:border-box;
-  font-family:'Poppins', sans-serif;
+  font-family:'Poppins',sans-serif;
+  scroll-behavior:smooth;
 }
 
 body{
-  margin:0;
-  background:#0f1115;
+  background:
+  radial-gradient(circle at top,#312e81 0%,#0f172a 35%,#020617 100%);
+  color:white;
+  overflow-x:hidden;
+}
+
+/* ===== SCROLL ===== */
+
+::-webkit-scrollbar{
+  width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(#22c55e,#c084fc);
+  border-radius:20px;
+}
+
+/* ===== ANIMACIONES ===== */
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(40px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes glow{
+  0%{
+    box-shadow:0 0 10px rgba(192,132,252,.3);
+  }
+  50%{
+    box-shadow:0 0 35px rgba(192,132,252,.7);
+  }
+  100%{
+    box-shadow:0 0 10px rgba(192,132,252,.3);
+  }
+}
+
+/* ===== NAVBAR ===== */
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:999;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  backdrop-filter:blur(20px);
+  background:rgba(15,23,42,.7);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.logo{
+  font-size:30px;
+  font-weight:700;
+  background:linear-gradient(to right,#22c55e,#c084fc);
+  -webkit-background-clip:text;
+  color:transparent;
+  cursor:pointer;
+  transition:.4s;
+}
+
+.logo:hover{
+  transform:scale(1.06);
+}
+
+nav ul{
+  display:flex;
+  gap:25px;
+  list-style:none;
+}
+
+nav ul a{
+  text-decoration:none;
   color:#e5e7eb;
+  font-weight:500;
+  transition:.3s;
+  position:relative;
 }
 
-/* HEADER */
-header{
+nav ul a::after{
+  content:'';
+  width:0%;
+  height:2px;
+  background:#22c55e;
+  position:absolute;
+  left:0;
+  bottom:-5px;
+  transition:.3s;
+}
+
+nav ul a:hover::after{
+  width:100%;
+}
+
+nav ul a:hover{
+  color:#22c55e;
+}
+
+/* ===== DROPDOWN ===== */
+
+.logo-menu{
+  position:relative;
+}
+
+.dropdown{
+  position:absolute;
+  top:60px;
+  left:0;
+  width:230px;
+  display:none;
+  flex-direction:column;
+  background:rgba(15,23,42,.95);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 20px 40px rgba(0,0,0,.5);
+  animation:fadeUp .5s ease;
+}
+
+.dropdown a{
+  padding:16px;
+  color:white;
+  text-decoration:none;
+  transition:.3s;
+}
+
+.dropdown a:hover{
+  background:#22c55e;
+  color:#052e16;
+  padding-left:25px;
+}
+
+.show{
+  display:flex;
+}
+
+/* ===== HERO ===== */
+
+.hero{
+  min-height:90vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
   text-align:center;
-  padding:20px;
-  font-size:28px;
-  font-weight:bold;
-  background:#111827;
-  border-bottom:1px solid #1f2937;
+  padding:40px;
+  background:
+  linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.7)),
+  url("https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=1600&auto=format&fit=crop");
+  background-size:cover;
+  background-position:center;
+  position:relative;
 }
 
-/* CONTENEDOR */
-.container{
+.hero::before{
+  content:'';
+  position:absolute;
+  width:400px;
+  height:400px;
+  background:#c084fc;
+  filter:blur(150px);
+  opacity:.2;
+  border-radius:50%;
+  top:50px;
+  right:50px;
+}
+
+.hero h1{
+  font-size:70px;
   max-width:1000px;
-  margin:auto;
-  padding:20px;
+  line-height:1.1;
+  margin-bottom:20px;
+  animation:fadeUp 1s ease;
+  text-shadow:0 0 20px rgba(192,132,252,.4);
 }
 
-/* FORM */
-.form{
-  background:#111827;
-  padding:20px;
-  border-radius:15px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);
-  margin-bottom:20px;
+.hero span{
+  background:linear-gradient(to right,#22c55e,#c084fc);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.hero p{
+  max-width:750px;
+  font-size:22px;
+  color:#d1d5db;
+  animation:fadeUp 1.3s ease;
+}
+
+.hero button{
+  margin-top:35px;
+  width:auto;
+  padding:16px 40px;
+  border:none;
+  border-radius:50px;
+  background:linear-gradient(to right,#22c55e,#c084fc);
+  color:white;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.4s;
+  animation:glow 3s infinite;
+}
+
+.hero button:hover{
+  transform:translateY(-5px) scale(1.05);
+}
+
+/* ===== CONTENEDOR ===== */
+
+.container{
+  max-width:1250px;
+  margin:auto;
+  padding:50px 20px;
+}
+
+/* ===== TITULOS ===== */
+
+.section-title{
+  text-align:center;
+  font-size:50px;
+  margin-bottom:35px;
+  background:linear-gradient(to right,#c084fc,#22c55e);
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:fadeUp .8s ease;
+}
+
+/* ===== FORMULARIOS ===== */
+
+.form,
+.weather-box{
+  background:rgba(17,24,39,.7);
+  border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(20px);
+  border-radius:25px;
+  padding:35px;
+  margin-bottom:35px;
+  animation:fadeUp .8s ease;
+  box-shadow:0 20px 40px rgba(0,0,0,.3);
+}
+
+.form:hover,
+.weather-box:hover{
+  transform:translateY(-5px);
+  transition:.4s;
 }
 
 .form h2{
   text-align:center;
+  margin-bottom:20px;
   color:#86efac;
 }
 
-/* INPUTS */
-input{
+/* ===== INPUTS ===== */
+
+input,
+select{
   width:100%;
-  padding:12px;
-  margin:10px 0;
-  border-radius:8px;
-  border:1px solid #374151;
-  background:#0f1115;
-  color:white;
-  transition:0.3s;
-}
-
-input:focus{
-  border-color:#86efac;
-  box-shadow:0 0 8px rgba(134,239,172,0.4);
+  padding:16px;
+  margin:12px 0;
+  border:none;
   outline:none;
+  border-radius:15px;
+  background:#0f172a;
+  color:white;
+  font-size:15px;
+  border:1px solid transparent;
+  transition:.3s;
 }
 
-/* BOTÓN */
+input:focus,
+select:focus{
+  border:1px solid #22c55e;
+  box-shadow:0 0 15px rgba(34,197,94,.3);
+}
+
+/* ===== BOTONES ===== */
+
 button{
   width:100%;
-  padding:12px;
-  background:#22c55e;
-  color:#022c22;
+  padding:16px;
   border:none;
-  border-radius:8px;
-  cursor:pointer;
+  border-radius:15px;
+  background:linear-gradient(to right,#22c55e,#16a34a);
+  color:white;
   font-size:16px;
-  transition:0.3s;
-  font-weight:bold;
+  font-weight:700;
+  cursor:pointer;
+  transition:.4s;
 }
 
 button:hover{
-  background:#16a34a;
-  transform:scale(1.03);
+  transform:translateY(-4px) scale(1.02);
+  box-shadow:0 10px 25px rgba(34,197,94,.4);
 }
 
-/* GRID */
+/* ===== GRID ===== */
+
 .grid{
   display:grid;
-  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:28px;
 }
 
-/* CARD */
+/* ===== CARDS ===== */
+
 .card{
-  background:#111827;
-  border-radius:15px;
-  padding:15px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.6);
-  transition:0.3s;
-  border:1px solid #1f2937;
+  background:rgba(17,24,39,.7);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:25px;
+  overflow:hidden;
+  position:relative;
+  transition:.5s;
+  animation:fadeUp .8s ease;
+  backdrop-filter:blur(15px);
+  opacity:0;
+  transform:translateY(40px);
 }
 
 .card:hover{
-  transform:translateY(-5px);
+  transform:translateY(-10px) scale(1.02);
   border-color:#22c55e;
+  box-shadow:0 20px 50px rgba(0,0,0,.4);
 }
 
-/* IMAGEN */
 .card img{
   width:100%;
-  border-radius:10px;
-  margin-top:10px;
+  height:240px;
+  object-fit:cover;
+  transition:.6s;
 }
 
-/* TEXTO */
+.card:hover img{
+  transform:scale(1.08);
+}
+
 .card h3{
   color:#86efac;
+  font-size:24px;
+  margin:18px;
 }
 
 .card p{
   color:#d1d5db;
+  margin:0 18px 20px;
+  line-height:1.7;
 }
 
-/* MENSAJE VACÍO */
-.empty{
+.card::before{
+  content:'';
+  position:absolute;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  background:linear-gradient(
+  transparent,
+  rgba(255,255,255,.04),
+  transparent
+  );
+  transform:rotate(25deg);
+  transition:.7s;
+}
+
+.card:hover::before{
+  left:100%;
+}
+
+/* ===== BOTONES PRODUCTOS ===== */
+
+.product-btn{
+  display:block;
+  margin:20px;
   text-align:center;
-  color:#6b7280;
+  text-decoration:none;
+  padding:14px;
+  border-radius:14px;
+  background:linear-gradient(to right,#c084fc,#8b5cf6);
+  color:white;
+  font-weight:700;
+  transition:.4s;
 }
 
-/* ANIMACIÓN */
-.card{
-  animation:fadeIn 0.4s ease;
+.product-btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 10px 25px rgba(192,132,252,.4);
 }
 
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(10px);}
-  to{opacity:1; transform:translateY(0);}
+/* ===== DELETE ===== */
+
+.delete-btn{
+  background:linear-gradient(to right,#ef4444,#dc2626);
+  margin:20px;
 }
+
+.delete-btn:hover{
+  box-shadow:0 10px 25px rgba(239,68,68,.4);
+}
+
+/* ===== RESULTADO CLIMA ===== */
+
+#resultadoClima{
+  margin-top:20px;
+  padding:20px;
+  border-radius:18px;
+  background:#0f172a;
+  line-height:2;
+  animation:fadeUp .5s ease;
+}
+
+/* ===== FOOTER ===== */
+
+footer{
+  margin-top:80px;
+  text-align:center;
+  padding:40px;
+  background:rgba(15,23,42,.8);
+  border-top:1px solid rgba(255,255,255,.08);
+  color:#9ca3af;
+  font-size:15px;
+}
+
+/* ===== OCULTO ===== */
+
+.oculto{
+  display:none;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:900px){
+
+.hero h1{
+  font-size:45px;
+}
+
+.section-title{
+  font-size:38px;
+}
+
+nav{
+  padding:15px 20px;
+}
+
+nav ul{
+  display:none;
+}
+
+.hero p{
+  font-size:18px;
+}
+
+}
+
 </style>
+
 </head>
 
 <body>
 
-<header>🌿 Sistema de Registro de Lavandas</header>
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo-menu">
+
+<div class="logo" onclick="toggleMenu()">
+🌿 Lavandas
+</div>
+
+<div class="dropdown" id="menu">
+
+<a href="#inicio">🏠 Inicio</a>
+
+<a href="#registro">🌿 Registro</a>
+
+<a href="#clima">☁️ Clima</a>
+
+<a href="galeria.html">🖼️ Galería</a>>
+
+<a href="productos.html">🛍️ Productos</a>
+
+</div>
+
+</div>
+
+<ul>
+
+<li><a href="#registro">Registro</a></li>
+
+<li><a href="#clima">Clima</a></li>
+
+
+<li><a href="#productos.html">Productos</a></li>
+
+</ul>
+
+</nav>
+
+<!-- HERO -->
+
+<section class="hero" id="inicio">
+
+<h1>
+🌿 Bienvenido al <span>Sistema de Lavandas</span>
+</h1>
+
+<p>
+Gestiona tus lavandas, revisa el clima en tiempo real,
+guarda imágenes y administra tus cultivos con un diseño moderno y elegante.
+</p>
+
+<button onclick="document.getElementById('registro').scrollIntoView()">
+🌱 Comenzar Ahora
+</button>
+
+</section>
 
 <div class="container">
 
+<!-- LOGIN -->
+
 <div class="form">
-  <h2>Agregar Lavanda</h2>
 
-  <input id="duenio" placeholder="👤 Nombre del dueño">
-  <input id="fecha" type="date">
-  <input id="altura" placeholder="📏 Altura en cm">
-  <input id="imagen" placeholder="🖼 URL de la imagen">
+<h2>🔐 Seleccionar Modo</h2>
 
-  <button onclick="guardar()">Guardar</button>
+<select id="rol">
+
+<option value="visualizador">👀 Visualizador</option>
+
+<option value="usuario">🌿 Usuario</option>
+
+<option value="admin">🛠️ Admin</option>
+
+</select>
+
+<input type="password" id="password" placeholder="🔑 Contraseña admin">
+
+<button onclick="entrar()">
+Entrar
+</button>
+
 </div>
+
+<!-- REGISTRO -->
+
+<section id="registro" class="oculto">
+
+<h2 class="section-title">
+🌿 Registro de Lavandas
+</h2>
+
+<div class="form">
+
+<input id="duenio" placeholder="👤 Nombre del dueño">
+
+<input id="nombreLavanda" placeholder="🌿 Nombre de la lavanda">
+
+<input id="fecha" type="date">
+
+<input id="altura" placeholder="📏 Altura en cm">
+
+<input id="imagen" placeholder="🖼 URL imagen">
+
+<button onclick="guardar()">
+Guardar
+</button>
+
+</div>
+
+</section>
+
+<!-- CLIMA -->
+
+<section id="clima" class="oculto">
+
+<h2 class="section-title">
+☁️ Consulta del Clima
+</h2>
+
+<div class="weather-box">
+
+<input id="ciudad" placeholder="🌍 Escribe una ciudad">
+
+<button onclick="consultarClima()">
+Consultar Clima
+</button>
+
+<div id="resultadoClima"></div>
+
+</div>
+
+</section>
+
+
+
+<!-- LAVANDAS -->
+
+<h2 class="section-title">
+🌱 Lavandas Registradas
+</h2>
 
 <div class="grid" id="lista"></div>
 
-</div>
+
+
+<footer>
+🌿 Sistema Web de Lavandas | MongoDB + Render
+</footer>
 
 <script>
 
-const API = "http://localhost:3000/lavandas";
+const API = "https://paecccccc.onrender.com/lavandas";
 
-// 🔹 CARGAR
-function cargar(){
-  fetch(API)
-  .then(res => res.json())
-  .then(data => {
-    const lista = document.getElementById("lista");
+const WEATHER_KEY = "e3ac288a4317268776e07b881fb4fa51";
 
-    if(data.length === 0){
-      lista.innerHTML = "<p class='empty'>No hay lavandas registradas 🌿</p>";
-      return;
-    }
+let modo = "visualizador";
 
-    lista.innerHTML = data.map(l => `
-      <div class="card">
-        <h3>${l.duenio}</h3>
-        <p><b>📅 Fecha:</b> ${l.fecha}</p>
-        <p><b>📏 Altura:</b> ${l.altura} cm</p>
-        ${l.imagen ? `<img src="${l.imagen}">` : ""}
-      </div>
-    `).join("");
-  });
+/* ===== MENU ===== */
+
+function toggleMenu(){
+
+const menu = document.getElementById("menu");
+
+menu.classList.toggle("show");
+
 }
 
-// 🔹 GUARDAR
-function guardar(){
+/* ===== LOGIN ===== */
 
-  if(!duenio.value || !fecha.value || !altura.value){
-    alert("Completa todos los campos");
-    return;
-  }
+function entrar(){
 
-  fetch(API, {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({
-      duenio: duenio.value,
-      fecha: fecha.value,
-      altura: altura.value,
-      imagen: imagen.value
-    })
-  })
-  .then(()=>{
-    alert("🌿 Lavanda registrada");
+const rol = document.getElementById("rol").value;
 
-    duenio.value="";
-    fecha.value="";
-    altura.value="";
-    imagen.value="";
+const password = document.getElementById("password").value;
 
-    cargar();
-  });
+if(rol === "admin"){
+
+if(password !== "admin123"){
+
+alert("❌ Contraseña incorrecta");
+
+return;
+
+}
+
+modo = "admin";
+
+}
+
+else if(rol === "usuario"){
+
+modo = "usuario";
+
+}
+
+else{
+
+modo = "visualizador";
+
+}
+
+alert("✅ Entraste como " + modo);
+
+configurarVista();
+
+}
+
+/* ===== CONFIGURAR VISTA ===== */
+
+function configurarVista(){
+
+if(modo === "visualizador"){
+
+document.getElementById("registro").classList.add("oculto");
+
+document.getElementById("clima").classList.add("oculto");
+
+}
+
+if(modo === "usuario"){
+
+document.getElementById("registro").classList.remove("oculto");
+
+document.getElementById("clima").classList.remove("oculto");
+
+}
+
+if(modo === "admin"){
+
+document.getElementById("registro").classList.remove("oculto");
+
+document.getElementById("clima").classList.remove("oculto");
+
 }
 
 cargar();
+
+}
+
+/* ===== CARGAR ===== */
+
+function cargar(){
+
+fetch(API)
+
+.then(res => res.json())
+
+.then(data => {
+
+const lista = document.getElementById("lista");
+
+lista.innerHTML = data.map(l => `
+
+<div class="card">
+
+<h3>${l.nombreLavanda || "Lavanda"}</h3>
+
+<p><b>👤 Dueño:</b> ${l.duenio}</p>
+
+<p><b>📅 Fecha:</b> ${l.fecha}</p>
+
+<p><b>📏 Altura:</b> ${l.altura} cm</p>
+
+${l.imagen ? `<img src="${l.imagen}">` : ""}
+
+${modo === "admin" ? `
+<button class="delete-btn" onclick="eliminar('${l._id}')">
+🗑 Eliminar
+</button>
+` : ""}
+
+</div>
+
+`).join("");
+
+activarAnimaciones();
+
+});
+
+}
+
+/* ===== GUARDAR ===== */
+
+function guardar(){
+
+if(modo === "visualizador"){
+
+alert("❌ No tienes permisos");
+
+return;
+
+}
+
+fetch(API, {
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body: JSON.stringify({
+
+duenio: duenio.value,
+
+nombreLavanda: nombreLavanda.value,
+
+fecha: fecha.value,
+
+altura: altura.value,
+
+imagen: imagen.value
+
+})
+
+})
+
+.then(()=>{
+
+alert("🌿 Lavanda registrada");
+
+duenio.value="";
+nombreLavanda.value="";
+fecha.value="";
+altura.value="";
+imagen.value="";
+
+cargar();
+
+});
+
+}
+
+/* ===== ELIMINAR ===== */
+
+function eliminar(id){
+
+if(modo !== "admin"){
+
+alert("❌ Solo admin puede eliminar");
+
+return;
+
+}
+
+fetch(API + "/" + id, {
+
+method:"DELETE"
+
+})
+
+.then(()=>{
+
+alert("🗑 Lavanda eliminada");
+
+cargar();
+
+});
+
+}
+
+/* ===== CLIMA ===== */
+
+async function consultarClima(){
+
+const ciudad = document.getElementById("ciudad").value;
+
+if(!ciudad){
+
+alert("Escribe una ciudad");
+
+return;
+
+}
+
+try{
+
+const respuesta = await fetch(
+`https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${WEATHER_KEY}&units=metric&lang=es`
+);
+
+const data = await respuesta.json();
+
+if(data.cod != 200){
+
+document.getElementById("resultadoClima").innerHTML = `
+<br>
+❌ Ciudad no encontrada
+`;
+
+return;
+
+}
+
+document.getElementById("resultadoClima").innerHTML = `
+
+🌍 Ciudad: ${data.name}<br><br>
+
+🌡️ Temperatura: ${data.main.temp} °C<br><br>
+
+☁️ Clima: ${data.weather[0].description}<br><br>
+
+💧 Humedad: ${data.main.humidity}%<br><br>
+
+🌬️ Viento: ${data.wind.speed} m/s
+
+`;
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+}
+
+/* ===== ANIMACION CARDS ===== */
+
+function activarAnimaciones(){
+
+const cards = document.querySelectorAll(".card");
+
+cards.forEach(card=>{
+
+const top = card.getBoundingClientRect().top;
+
+if(top < window.innerHeight - 100){
+
+card.style.opacity="1";
+card.style.transform="translateY(0px)";
+
+}
+
+});
+
+}
+
+window.addEventListener("scroll",activarAnimaciones);
+
+activarAnimaciones();
+
+configurarVista();
 
 </script>
 

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🖼️ Galería Premium Lavandas</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ===== RESET ===== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+  scroll-behavior:smooth;
+}
+
+body{
+  background:
+  radial-gradient(circle at top,#312e81 0%,#0f172a 40%,#020617 100%);
+  color:white;
+  overflow-x:hidden;
+}
+
+/* ===== SCROLL ===== */
+
+::-webkit-scrollbar{
+  width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(#22c55e,#c084fc);
+  border-radius:20px;
+}
+
+/* ===== ANIMACIONES ===== */
+
+@keyframes fadeUp{
+
+  from{
+    opacity:0;
+    transform:translateY(50px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+}
+
+@keyframes float{
+
+  0%{
+    transform:translateY(0px);
+  }
+
+  50%{
+    transform:translateY(-12px);
+  }
+
+  100%{
+    transform:translateY(0px);
+  }
+
+}
+
+/* ===== NAVBAR ===== */
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:999;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 40px;
+  background:rgba(15,23,42,.7);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.logo{
+  font-size:32px;
+  font-weight:700;
+  background:linear-gradient(to right,#22c55e,#c084fc);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.back-btn{
+  text-decoration:none;
+  color:white;
+  padding:12px 22px;
+  border-radius:14px;
+  background:linear-gradient(to right,#22c55e,#16a34a);
+  font-weight:700;
+  transition:.4s;
+}
+
+.back-btn:hover{
+  transform:translateY(-3px) scale(1.05);
+  box-shadow:0 10px 25px rgba(34,197,94,.4);
+}
+
+/* ===== HERO ===== */
+
+.hero{
+  min-height:70vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:40px;
+  position:relative;
+  overflow:hidden;
+
+  background:
+  linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),
+  url("https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=1800&auto=format&fit=crop");
+
+  background-size:cover;
+  background-position:center;
+}
+
+.hero::before{
+  content:'';
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:#c084fc;
+  border-radius:50%;
+  filter:blur(160px);
+  opacity:.18;
+  top:-120px;
+  right:-100px;
+}
+
+.hero::after{
+  content:'';
+  position:absolute;
+  width:400px;
+  height:400px;
+  background:#22c55e;
+  border-radius:50%;
+  filter:blur(150px);
+  opacity:.12;
+  bottom:-120px;
+  left:-100px;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  animation:fadeUp 1s ease;
+}
+
+.hero h1{
+  font-size:75px;
+  margin-bottom:20px;
+  line-height:1.1;
+  text-shadow:0 0 30px rgba(192,132,252,.5);
+}
+
+.hero span{
+  background:linear-gradient(to right,#22c55e,#c084fc);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.hero p{
+  max-width:800px;
+  margin:auto;
+  font-size:22px;
+  color:#e5e7eb;
+  line-height:1.8;
+}
+
+.hero-icon{
+  margin-top:40px;
+  font-size:70px;
+  animation:float 4s infinite ease-in-out;
+}
+
+/* ===== CONTAINER ===== */
+
+.container{
+  max-width:1400px;
+  margin:auto;
+  padding:80px 30px;
+}
+
+/* ===== TITULO ===== */
+
+.section-title{
+  text-align:center;
+  font-size:55px;
+  margin-bottom:20px;
+
+  background:linear-gradient(to right,#c084fc,#22c55e);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.section-sub{
+  text-align:center;
+  color:#cbd5e1;
+  margin-bottom:60px;
+  font-size:18px;
+}
+
+/* ===== FILTROS ===== */
+
+.filters{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:18px;
+  margin-bottom:50px;
+}
+
+.filters button{
+  border:none;
+  padding:14px 24px;
+  border-radius:50px;
+  cursor:pointer;
+  font-weight:700;
+  color:white;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.08);
+  transition:.4s;
+}
+
+.filters button:hover{
+  transform:translateY(-4px);
+  background:linear-gradient(to right,#22c55e,#c084fc);
+  box-shadow:0 10px 30px rgba(192,132,252,.3);
+}
+
+/* ===== GRID ===== */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:35px;
+}
+
+/* ===== CARD ===== */
+
+.card{
+  position:relative;
+  overflow:hidden;
+  border-radius:28px;
+  background:rgba(17,24,39,.65);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.06);
+
+  transition:.5s;
+  animation:fadeUp .8s ease;
+}
+
+.card:hover{
+  transform:translateY(-14px) scale(1.02);
+  box-shadow:0 25px 50px rgba(0,0,0,.45);
+  border-color:#22c55e;
+}
+
+.card::before{
+  content:'';
+  position:absolute;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  background:linear-gradient(
+  transparent,
+  rgba(255,255,255,.08),
+  transparent
+  );
+  transform:rotate(25deg);
+  transition:.8s;
+}
+
+.card:hover::before{
+  left:100%;
+}
+
+/* ===== IMG ===== */
+
+.card-img{
+  overflow:hidden;
+  height:300px;
+}
+
+.card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.7s;
+}
+
+.card:hover img{
+  transform:scale(1.12);
+}
+
+/* ===== CONTENT ===== */
+
+.card-content{
+  padding:25px;
+}
+
+.card h3{
+  font-size:28px;
+  margin-bottom:15px;
+  color:#86efac;
+}
+
+.card p{
+  color:#d1d5db;
+  line-height:1.8;
+  font-size:15px;
+}
+
+/* ===== BADGE ===== */
+
+.badge{
+  position:absolute;
+  top:18px;
+  right:18px;
+  z-index:5;
+
+  padding:10px 16px;
+  border-radius:999px;
+
+  background:linear-gradient(to right,#c084fc,#8b5cf6);
+
+  color:white;
+  font-size:13px;
+  font-weight:700;
+
+  box-shadow:0 8px 20px rgba(0,0,0,.35);
+}
+
+/* ===== OVERLAY ===== */
+
+.overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+  to top,
+  rgba(0,0,0,.75),
+  transparent
+  );
+
+  opacity:0;
+  transition:.5s;
+
+  display:flex;
+  justify-content:center;
+  align-items:end;
+  padding-bottom:30px;
+}
+
+.card:hover .overlay{
+  opacity:1;
+}
+
+.overlay span{
+  padding:12px 24px;
+  border-radius:40px;
+  background:white;
+  color:#111827;
+  font-weight:700;
+}
+
+/* ===== FOOTER ===== */
+
+footer{
+  margin-top:80px;
+  padding:45px;
+  text-align:center;
+  background:rgba(15,23,42,.85);
+  border-top:1px solid rgba(255,255,255,.08);
+  color:#94a3b8;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:900px){
+
+.hero h1{
+  font-size:48px;
+}
+
+.hero p{
+  font-size:18px;
+}
+
+.section-title{
+  font-size:40px;
+}
+
+nav{
+  padding:18px 20px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ===== NAVBAR ===== -->
+
+<nav>
+
+<div class="logo">
+🌿 Galería Lavandas
+</div>
+
+<a href="index.html" class="back-btn">
+⬅ Volver
+</a>
+
+</nav>
+
+<!-- ===== HERO ===== -->
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>
+💜 Galería <span>Premium</span>
+</h1>
+
+<p>
+Explora fotografías modernas y paisajes naturales llenos de lavandas,
+con un diseño elegante, animaciones suaves y estilo visual premium.
+</p>
+
+<div class="hero-icon">
+🌸
+</div>
+
+</div>
+
+</section>
+
+<!-- ===== GALERIA ===== -->
+
+<div class="container">
+
+<h2 class="section-title">
+🖼️ Colección Natural
+</h2>
+
+<p class="section-sub">
+Paisajes, jardines y lavandas naturales en alta calidad.
+</p>
+
+<!-- ===== FILTROS ===== -->
+
+<div class="filters">
+
+<button>🌸 Flores</button>
+
+<button>🌿 Jardines</button>
+
+<button>💜 Premium</button>
+
+<button>📸 Naturaleza</button>
+
+<button>✨ Moderno</button>
+
+</div>
+
+<!-- ===== GRID ===== -->
+
+<div class="grid">
+
+<!-- CARD -->
+
+<div class="card">
+
+<div class="badge">
+🌸 Floral
+</div>
+
+<div class="card-img">
+
+<img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop">
+
+</div>
+
+<div class="overlay">
+<span>Ver Imagen</span>
+</div>
+
+<div class="card-content">
+
+<h3>Lavanda Aromática</h3>
+
+<p>
+Flores naturales de lavanda cultivadas en jardines frescos con aroma relajante.
+</p>
+
+</div>
+
+</div>
+
+<!-- CARD -->
+
+<div class="card">
+
+<div class="badge">
+🌿 Jardín
+</div>
+
+<div class="card-img">
+
+<img src="https://images.unsplash.com/photo-1473773508845-188df298d2d1?q=80&w=1200&auto=format&fit=crop">
+
+</div>
+
+<div class="overlay">
+<span>Explorar</span>
+</div>
+
+<div class="card-content">
+
+<h3>Campo Natural</h3>
+
+<p>
+Campos extensos llenos de lavandas moradas durante primavera.
+</p>
+
+</div>
+
+</div>
+
+<!-- CARD -->
+
+<div class="card">
+
+<div class="badge">
+💜 Premium
+</div>
+
+<div class="card-img">
+
+<img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=1200&auto=format&fit=crop">
+
+</div>
+
+<div class="overlay">
+<span>Vista HD</span>
+</div>
+
+<div class="card-content">
+
+<h3>Lavandas Premium</h3>
+
+<p>
+Paisajes modernos con iluminación natural y flores vibrantes.
+</p>
+
+</div>
+
+</div>
+
+<!-- CARD -->
+
+<div class="card">
+
+<div class="badge">
+📸 Naturaleza
+</div>
+
+<div class="card-img">
+
+<img src="https://images.unsplash.com/photo-1499002238440-d264edd596ec?q=80&w=1200&auto=format&fit=crop">
+
+</div>
+
+<div class="overlay">
+<span>Ver Foto</span>
+</div>
+
+<div class="card-content">
+
+<h3>Sendero Floral</h3>
+
+<p>
+Caminos rodeados de naturaleza y campos llenos de lavandas.
+</p>
+
+</div>
+
+</div>
+
+<!-- CARD -->
+
+<div class="card">
+
+<div class="badge">
+✨ Elegante
+</div>
+
+<div class="card-img">
+
+<img src="https://images.unsplash.com/photo-1526397751294-331021109fbd?q=80&w=1200&auto=format&fit=crop">
+
+</div>
+
+<div class="overlay">
+<span>Premium</span>
+</div>
+
+<div class="card-content">
+
+<h3>Atardecer Lavanda</h3>
+
+<p>
+Paisajes naturales iluminados por la luz cálida del atardecer.
+</p>
+
+</div>
+
+</div>
+
+<!-- CARD -->
+
+<div class="card">
+
+<div class="badge">
+🌸 Relax
+</div>
+
+<div class="card-img">
+
+<img src="https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?q=80&w=1200&auto=format&fit=crop">
+
+</div>
+
+<div class="overlay">
+<span>Galería</span>
+</div>
+
+<div class="card-content">
+
+<h3>Lavanda Fresca</h3>
+
+<p>
+Flores relajantes y frescas capturadas en alta definición.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+
+<footer>
+
+🌿 Sistema Web de Lavandas | Galería Premium Moderna
+
+</footer>
+
+</body>
+</html>
