@@ -467,6 +467,40 @@ con un diseño elegante, animaciones suaves y estilo visual premium.
 Paisajes, jardines y lavandas naturales en alta calidad.
 </p>
 
+<div style="text-align:center; margin-bottom:40px;">
+
+<input
+type="file"
+id="archivo"
+accept="image/*"
+style="
+padding:15px;
+background:#111827;
+color:white;
+border-radius:12px;
+margin-bottom:15px;
+">
+
+<br>
+
+<button onclick="subirImagen()" style="
+width:auto;
+padding:15px 30px;
+">
+📸 Subir Imagen
+</button>
+
+</div>
+
+
+
+
+
+
+
+
+
+
 <!-- ===== FILTROS ===== -->
 
 <div class="filters">
@@ -485,189 +519,7 @@ Paisajes, jardines y lavandas naturales en alta calidad.
 
 <!-- ===== GRID ===== -->
 
-<div class="grid">
-
-<!-- CARD -->
-
-<div class="card">
-
-<div class="badge">
-🌸 Floral
-</div>
-
-<div class="card-img">
-
-<img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop">
-
-</div>
-
-<div class="overlay">
-<span>Ver Imagen</span>
-</div>
-
-<div class="card-content">
-
-<h3>Lavanda Aromática</h3>
-
-<p>
-Flores naturales de lavanda cultivadas en jardines frescos con aroma relajante.
-</p>
-
-</div>
-
-</div>
-
-<!-- CARD -->
-
-<div class="card">
-
-<div class="badge">
-🌿 Jardín
-</div>
-
-<div class="card-img">
-
-<img src="https://images.unsplash.com/photo-1473773508845-188df298d2d1?q=80&w=1200&auto=format&fit=crop">
-
-</div>
-
-<div class="overlay">
-<span>Explorar</span>
-</div>
-
-<div class="card-content">
-
-<h3>Campo Natural</h3>
-
-<p>
-Campos extensos llenos de lavandas moradas durante primavera.
-</p>
-
-</div>
-
-</div>
-
-<!-- CARD -->
-
-<div class="card">
-
-<div class="badge">
-💜 Premium
-</div>
-
-<div class="card-img">
-
-<img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=1200&auto=format&fit=crop">
-
-</div>
-
-<div class="overlay">
-<span>Vista HD</span>
-</div>
-
-<div class="card-content">
-
-<h3>Lavandas Premium</h3>
-
-<p>
-Paisajes modernos con iluminación natural y flores vibrantes.
-</p>
-
-</div>
-
-</div>
-
-<!-- CARD -->
-
-<div class="card">
-
-<div class="badge">
-📸 Naturaleza
-</div>
-
-<div class="card-img">
-
-<img src="https://images.unsplash.com/photo-1499002238440-d264edd596ec?q=80&w=1200&auto=format&fit=crop">
-
-</div>
-
-<div class="overlay">
-<span>Ver Foto</span>
-</div>
-
-<div class="card-content">
-
-<h3>Sendero Floral</h3>
-
-<p>
-Caminos rodeados de naturaleza y campos llenos de lavandas.
-</p>
-
-</div>
-
-</div>
-
-<!-- CARD -->
-
-<div class="card">
-
-<div class="badge">
-✨ Elegante
-</div>
-
-<div class="card-img">
-
-<img src="https://images.unsplash.com/photo-1526397751294-331021109fbd?q=80&w=1200&auto=format&fit=crop">
-
-</div>
-
-<div class="overlay">
-<span>Premium</span>
-</div>
-
-<div class="card-content">
-
-<h3>Atardecer Lavanda</h3>
-
-<p>
-Paisajes naturales iluminados por la luz cálida del atardecer.
-</p>
-
-</div>
-
-</div>
-
-<!-- CARD -->
-
-<div class="card">
-
-<div class="badge">
-🌸 Relax
-</div>
-
-<div class="card-img">
-
-<img src="https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?q=80&w=1200&auto=format&fit=crop">
-
-</div>
-
-<div class="overlay">
-<span>Galería</span>
-</div>
-
-<div class="card-content">
-
-<h3>Lavanda Fresca</h3>
-
-<p>
-Flores relajantes y frescas capturadas en alta definición.
-</p>
-
-</div>
-
-</div>
-
-</div>
+<div class="grid" id="galeria">
 
 </div>
 
@@ -678,6 +530,108 @@ Flores relajantes y frescas capturadas en alta definición.
 🌿 Sistema Web de Lavandas | Galería Premium Moderna
 
 </footer>
+
+<script>
+
+let imagenes = JSON.parse(
+localStorage.getItem("galeriaLavandas")
+) || [];
+
+function mostrarImagenes(){
+
+    const galeria =
+    document.getElementById("galeria");
+
+    galeria.innerHTML = "";
+
+    imagenes.forEach(url=>{
+
+        galeria.innerHTML += `
+
+        <div class="card">
+
+            <div class="badge">
+            📸 Nueva
+            </div>
+
+            <div class="card-img">
+                <img src="${url}">
+            </div>
+
+            <div class="overlay">
+                <span>Ver Imagen</span>
+            </div>
+
+            <div class="card-content">
+
+                <h3>Lavanda</h3>
+
+                <p>
+                Imagen subida desde la galería.
+                </p>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+async function subirImagen(){
+
+    const archivo =
+    document.getElementById("archivo").files[0];
+
+    if(!archivo){
+        alert("Selecciona una imagen");
+        return;
+    }
+
+    const formData = new FormData();
+
+    formData.append("file", archivo);
+
+    formData.append(
+        "upload_preset",
+        "lavandas"
+    );
+
+    const respuesta = await fetch(
+        "https://api.cloudinary.com/v1_1/dh2zup2oy/image/upload",
+        {
+            method:"POST",
+            body:formData
+        }
+    );
+
+    const data = await respuesta.json();
+
+    if(!data.secure_url){
+        alert("Error al subir imagen");
+        return;
+    }
+
+    imagenes.push(data.secure_url);
+
+    localStorage.setItem(
+        "galeriaLavandas",
+        JSON.stringify(imagenes)
+    );
+
+    mostrarImagenes();
+
+    document.getElementById("archivo").value = "";
+
+}
+
+mostrarImagenes();
+
+</script>
+
+</body> 
 
 </body>
 </html>

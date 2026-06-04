@@ -11,6 +11,22 @@
 
 <style>
 
+.watermark{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:120px;
+    opacity:0.30;
+    pointer-events:none;
+    z-index:9999;
+    transition:0.10s;
+}
+
+.watermark:hover{
+    opacity:0.3;
+}
+
+
 /* ===== RESET ===== */
 
 *{
@@ -559,6 +575,8 @@ guarda imágenes y administra tus cultivos con un diseño moderno y elegante.
 
 <option value="visualizador">👀 Visualizador</option>
 
+
+
 <option value="usuario">🌿 Usuario</option>
 
 <option value="admin">🛠️ Admin</option>
@@ -591,7 +609,15 @@ Entrar
 
 <input id="altura" placeholder="📏 Altura en cm">
 
-<input id="imagen" placeholder="🖼 URL imagen">
+
+<input
+id="passwordLavanda"
+type="password"
+placeholder="🔑 Contraseña para registrar">
+
+<input type="file" id="imagen" accept="image/*">
+
+<p id="estadoImagen"></p>
 
 <button onclick="guardar()">
 Guardar
@@ -646,6 +672,8 @@ const API = "https://paecccccc.onrender.com/lavandas";
 const WEATHER_KEY = "e3ac288a4317268776e07b881fb4fa51";
 
 let modo = "visualizador";
+const PASSWORD_LAVANDA = "lavanda2026";
+let imagenURL = "";
 
 /* ===== MENU ===== */
 
@@ -771,83 +799,106 @@ activarAnimaciones();
 
 }
 
+/* ===== SUBIR IMAGEN CLOUDINARY ===== */
+
+async function subirImagen(){
+
+    const archivo =
+    document.getElementById("imagen").files[0];
+
+    if(!archivo){
+        return "";
+    }
+
+    const datos = new FormData();
+
+    datos.append("file", archivo);
+    datos.append("upload_preset", "lavandas");
+
+    const respuesta = await fetch(
+        "https://api.cloudinary.com/v1_1/dh2zup2oy/image/upload",
+        {
+            method:"POST",
+            body:datos
+        }
+    );
+
+    const resultado = await respuesta.json();
+
+    console.log(resultado);
+
+    if(resultado.secure_url){
+        return resultado.secure_url;
+    }
+
+    throw new Error("No se pudo subir");
+}
+
+
+
+
+
+
+
+
+
 /* ===== GUARDAR ===== */
+async function guardar(){
 
-function guardar(){
+    const pass = document.getElementById("passwordLavanda").value;
 
-if(modo === "visualizador"){
+    if(pass !== PASSWORD_LAVANDA){
+        alert("❌ Contraseña incorrecta");
+        return;
+    }
 
-alert("❌ No tienes permisos");
+    try{
 
-return;
+        const imagenURL = await subirImagen();
 
-}
+        fetch(API,{
 
-fetch(API, {
+            method:"POST",
 
-method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
 
-headers:{
-"Content-Type":"application/json"
-},
+            body:JSON.stringify({
 
-body: JSON.stringify({
+                duenio: duenio.value,
+                nombreLavanda: nombreLavanda.value,
+                fecha: fecha.value,
+                altura: altura.value,
+                imagen: imagenURL
 
-duenio: duenio.value,
+            })
 
-nombreLavanda: nombreLavanda.value,
+        })
+        .then(()=>{
 
-fecha: fecha.value,
+            alert("🌿 Lavanda registrada");
 
-altura: altura.value,
+            duenio.value="";
+            nombreLavanda.value="";
+            fecha.value="";
+            altura.value="";
 
-imagen: imagen.value
+            document.getElementById("passwordLavanda").value="";
+            document.getElementById("imagen").value="";
+            document.getElementById("estadoImagen").innerHTML="";
 
-})
+            cargar();
 
-})
+        });
 
-.then(()=>{
+    }
+    catch(error){
 
-alert("🌿 Lavanda registrada");
+        console.log(error);
+        alert("❌ Error al subir imagen");
 
-duenio.value="";
-nombreLavanda.value="";
-fecha.value="";
-altura.value="";
-imagen.value="";
-
-cargar();
-
-});
-
-}
-
-/* ===== ELIMINAR ===== */
-
-function eliminar(id){
-
-if(modo !== "admin"){
-
-alert("❌ Solo admin puede eliminar");
-
-return;
-
-}
-
-fetch(API + "/" + id, {
-
-method:"DELETE"
-
-})
-
-.then(()=>{
-
-alert("🗑 Lavanda eliminada");
-
-cargar();
-
-});
+    }
 
 }
 
@@ -931,11 +982,14 @@ card.style.transform="translateY(0px)";
 
 window.addEventListener("scroll",activarAnimaciones);
 
+
 activarAnimaciones();
 
 configurarVista();
+
 
 </script>
 
 </body>
 </html>
+<img src="pele.png" class="watermark">
